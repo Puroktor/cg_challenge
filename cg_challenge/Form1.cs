@@ -9,11 +9,13 @@ namespace cg_challenge
     public partial class Form1 : Form
     {
         private Matrix points;
+        private float interval = 20;
         public Form1()
         {
             InitializeComponent();
             openFileDialog.Filter = "Point files|*.pnt";
             openFileDialog.FileName = null;
+            Draw();
         }
 
         private void Draw()
@@ -41,10 +43,9 @@ namespace cg_challenge
             pictureBox.Image = bmp;
         }
 
-        private static void DrawAxes(Graphics g, int w, int h)
+        private void DrawAxes(Graphics g, int w, int h)
         {
             Pen pen = new Pen(Color.Red);
-            int interval = 20;
             g.DrawLine(pen, -w, 0, w, 0);
             g.FillPolygon(Brushes.Red, new Point[] { new Point(w, 0), new Point(w - 10, 5), new Point(w - 10, -5) });
             for (int i = 1; i * interval < w - 10; i++)
@@ -61,7 +62,7 @@ namespace cg_challenge
             }
         }
 
-        private void openButton_Click(object sender, EventArgs e)
+        private void OpenButton_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
@@ -83,8 +84,77 @@ namespace cg_challenge
             Draw();
         }
 
-        private void scalePlusButton_Click(object sender, EventArgs e)
+        private void ScalePlusButton_Click(object sender, EventArgs e)
         {
+            points *= Matrices2D.plusScale;
+            interval *= 1.05F;
+            Draw();
+        }
+
+        private void ScaleMinusButton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.minusScale;
+            interval *= 0.95F;
+            Draw();
+        }
+
+        private void RotatePlusButton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.plusRotate;
+            Draw();
+        }
+
+        private void RotateMinusButton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.minusRotate;
+            Draw();
+        }
+
+        private void TransfXPbutton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.plusXTransf;
+            Draw();
+        }
+
+        private void TransfXMbutton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.minusXTransf;
+            Draw();
+        }
+
+        private void TransfYPbutton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.plusYTransf;
+            Draw();
+        }
+
+        private void TransfYMbutton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.minusYTransf;
+            Draw();
+        }
+
+        private void MinusXScaleButton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.minusXScale;
+            Draw();
+        }
+
+        private void MinusYScaleButton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.minusYScale;
+            Draw();
+        }
+
+        private void PlusXScaleButton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.plusXScale;
+            Draw();
+        }
+
+        private void PlusYScaleButton_Click(object sender, EventArgs e)
+        {
+            points *= Matrices2D.plusYScale;
             Draw();
         }
     }

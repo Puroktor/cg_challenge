@@ -3,8 +3,7 @@
     public class Matrix
     {
         private float[,] matrix;
-        public readonly int m;
-        public readonly int n;
+        public readonly int n, m;
         public float this[int i, int j]
         {
             get { return matrix[i, j]; }
@@ -16,9 +15,17 @@
             this.n = n;
             this.m = m;
         }
+        public Matrix(float[,] matrix)
+        {
+            this.matrix = matrix;
+            n = matrix.GetLength(0);
+            m = matrix.GetLength(1);
+        }
 
         public static Matrix operator *(Matrix first, Matrix second)
         {
+            if (first == null || second == null)
+                return null;
             if (first.m != second.n)
                 throw new System.Exception("Матрицы разного размера!");
             Matrix res = new Matrix(first.n, second.m);
