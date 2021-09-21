@@ -33,6 +33,7 @@ namespace cg_challenge
             this.openButton = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel = new System.Windows.Forms.Panel();
+            this.trackBar = new System.Windows.Forms.TrackBar();
             this.plusYScaleButton = new System.Windows.Forms.Button();
             this.plusXScaleButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -52,9 +53,9 @@ namespace cg_challenge
             this.label1 = new System.Windows.Forms.Label();
             this.imagePanel = new System.Windows.Forms.Panel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar)).BeginInit();
             this.imagePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +68,7 @@ namespace cg_challenge
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(600, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip";
             // 
@@ -84,8 +85,8 @@ namespace cg_challenge
             // 
             // panel
             // 
-            this.panel.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.panel.Controls.Add(this.textBox1);
+            this.panel.BackColor = System.Drawing.SystemColors.Menu;
+            this.panel.Controls.Add(this.trackBar);
             this.panel.Controls.Add(this.plusYScaleButton);
             this.panel.Controls.Add(this.plusXScaleButton);
             this.panel.Controls.Add(this.label5);
@@ -104,11 +105,23 @@ namespace cg_challenge
             this.panel.Controls.Add(this.scalePlusButton);
             this.panel.Controls.Add(this.label1);
             this.panel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel.Location = new System.Drawing.Point(450, 24);
+            this.panel.Location = new System.Drawing.Point(634, 24);
             this.panel.Margin = new System.Windows.Forms.Padding(2);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(150, 342);
-            this.panel.TabIndex = 2;
+            this.panel.Size = new System.Drawing.Size(150, 537);
+            this.panel.TabIndex = 0;
+            // 
+            // trackBar
+            // 
+            this.trackBar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.trackBar.Location = new System.Drawing.Point(0, 300);
+            this.trackBar.Maximum = 360;
+            this.trackBar.Minimum = 1;
+            this.trackBar.Name = "trackBar";
+            this.trackBar.Size = new System.Drawing.Size(150, 45);
+            this.trackBar.TabIndex = 17;
+            this.trackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBar.Value = 5;
             // 
             // plusYScaleButton
             // 
@@ -117,7 +130,7 @@ namespace cg_challenge
             this.plusYScaleButton.Name = "plusYScaleButton";
             this.plusYScaleButton.Size = new System.Drawing.Size(60, 25);
             this.plusYScaleButton.TabIndex = 16;
-            this.plusYScaleButton.Text = "y: +5%";
+            this.plusYScaleButton.Text = "y: +□%";
             this.plusYScaleButton.UseVisualStyleBackColor = true;
             this.plusYScaleButton.Click += new System.EventHandler(this.PlusYScaleButton_Click);
             // 
@@ -128,7 +141,7 @@ namespace cg_challenge
             this.plusXScaleButton.Name = "plusXScaleButton";
             this.plusXScaleButton.Size = new System.Drawing.Size(60, 25);
             this.plusXScaleButton.TabIndex = 15;
-            this.plusXScaleButton.Text = "x: +5%";
+            this.plusXScaleButton.Text = "x: +□%";
             this.plusXScaleButton.UseVisualStyleBackColor = true;
             this.plusXScaleButton.Click += new System.EventHandler(this.PlusXScaleButton_Click);
             // 
@@ -151,7 +164,7 @@ namespace cg_challenge
             this.minusYScaleButton.Name = "minusYScaleButton";
             this.minusYScaleButton.Size = new System.Drawing.Size(60, 25);
             this.minusYScaleButton.TabIndex = 13;
-            this.minusYScaleButton.Text = "y: -5%";
+            this.minusYScaleButton.Text = "y: -□%";
             this.minusYScaleButton.UseVisualStyleBackColor = true;
             this.minusYScaleButton.Click += new System.EventHandler(this.MinusYScaleButton_Click);
             // 
@@ -162,7 +175,7 @@ namespace cg_challenge
             this.minusXScaleButton.Name = "minusXScaleButton";
             this.minusXScaleButton.Size = new System.Drawing.Size(60, 25);
             this.minusXScaleButton.TabIndex = 12;
-            this.minusXScaleButton.Text = "x: -5%";
+            this.minusXScaleButton.Text = "x: -□%";
             this.minusXScaleButton.UseVisualStyleBackColor = true;
             this.minusXScaleButton.Click += new System.EventHandler(this.MinusXScaleButton_Click);
             // 
@@ -185,7 +198,7 @@ namespace cg_challenge
             this.transfYMbutton.Name = "transfYMbutton";
             this.transfYMbutton.Size = new System.Drawing.Size(60, 25);
             this.transfYMbutton.TabIndex = 10;
-            this.transfYMbutton.Text = "y: -5px";
+            this.transfYMbutton.Text = "y: -□px";
             this.transfYMbutton.UseVisualStyleBackColor = true;
             this.transfYMbutton.Click += new System.EventHandler(this.TransfYMbutton_Click);
             // 
@@ -196,7 +209,7 @@ namespace cg_challenge
             this.transfYPbutton.Name = "transfYPbutton";
             this.transfYPbutton.Size = new System.Drawing.Size(60, 25);
             this.transfYPbutton.TabIndex = 9;
-            this.transfYPbutton.Text = "y: +5px";
+            this.transfYPbutton.Text = "y: +□px";
             this.transfYPbutton.UseVisualStyleBackColor = true;
             this.transfYPbutton.Click += new System.EventHandler(this.TransfYPbutton_Click);
             // 
@@ -207,7 +220,7 @@ namespace cg_challenge
             this.transfXMbutton.Name = "transfXMbutton";
             this.transfXMbutton.Size = new System.Drawing.Size(60, 25);
             this.transfXMbutton.TabIndex = 8;
-            this.transfXMbutton.Text = "x: -5px";
+            this.transfXMbutton.Text = "x: -□px";
             this.transfXMbutton.UseVisualStyleBackColor = true;
             this.transfXMbutton.Click += new System.EventHandler(this.TransfXMbutton_Click);
             // 
@@ -218,7 +231,7 @@ namespace cg_challenge
             this.transfXPbutton.Name = "transfXPbutton";
             this.transfXPbutton.Size = new System.Drawing.Size(60, 25);
             this.transfXPbutton.TabIndex = 7;
-            this.transfXPbutton.Text = "x: +5px";
+            this.transfXPbutton.Text = "x: +□px";
             this.transfXPbutton.UseVisualStyleBackColor = true;
             this.transfXPbutton.Click += new System.EventHandler(this.TransfXPbutton_Click);
             // 
@@ -239,7 +252,7 @@ namespace cg_challenge
             this.rotateMinusButton.Name = "rotateMinusButton";
             this.rotateMinusButton.Size = new System.Drawing.Size(60, 25);
             this.rotateMinusButton.TabIndex = 5;
-            this.rotateMinusButton.Text = "-5°";
+            this.rotateMinusButton.Text = "-□°";
             this.rotateMinusButton.UseVisualStyleBackColor = true;
             this.rotateMinusButton.Click += new System.EventHandler(this.RotateMinusButton_Click);
             // 
@@ -250,7 +263,7 @@ namespace cg_challenge
             this.rotatePlusButton.Name = "rotatePlusButton";
             this.rotatePlusButton.Size = new System.Drawing.Size(60, 25);
             this.rotatePlusButton.TabIndex = 4;
-            this.rotatePlusButton.Text = "+5°";
+            this.rotatePlusButton.Text = "+□°";
             this.rotatePlusButton.UseVisualStyleBackColor = true;
             this.rotatePlusButton.Click += new System.EventHandler(this.RotatePlusButton_Click);
             // 
@@ -274,7 +287,7 @@ namespace cg_challenge
             this.scaleMinusButton.Name = "scaleMinusButton";
             this.scaleMinusButton.Size = new System.Drawing.Size(60, 25);
             this.scaleMinusButton.TabIndex = 2;
-            this.scaleMinusButton.Text = "-5%";
+            this.scaleMinusButton.Text = "-□%";
             this.scaleMinusButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.scaleMinusButton.UseVisualStyleBackColor = true;
             this.scaleMinusButton.Click += new System.EventHandler(this.ScaleMinusButton_Click);
@@ -287,7 +300,7 @@ namespace cg_challenge
             this.scalePlusButton.Name = "scalePlusButton";
             this.scalePlusButton.Size = new System.Drawing.Size(60, 25);
             this.scalePlusButton.TabIndex = 1;
-            this.scalePlusButton.Text = "+5%";
+            this.scalePlusButton.Text = "+□%";
             this.scalePlusButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.scalePlusButton.UseVisualStyleBackColor = true;
             this.scalePlusButton.Click += new System.EventHandler(this.ScalePlusButton_Click);
@@ -313,7 +326,7 @@ namespace cg_challenge
             this.imagePanel.Location = new System.Drawing.Point(0, 24);
             this.imagePanel.Margin = new System.Windows.Forms.Padding(2);
             this.imagePanel.Name = "imagePanel";
-            this.imagePanel.Size = new System.Drawing.Size(450, 342);
+            this.imagePanel.Size = new System.Drawing.Size(634, 537);
             this.imagePanel.TabIndex = 3;
             // 
             // pictureBox
@@ -323,22 +336,15 @@ namespace cg_challenge
             this.pictureBox.Location = new System.Drawing.Point(0, 0);
             this.pictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(450, 342);
+            this.pictureBox.Size = new System.Drawing.Size(634, 537);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(24, 300);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 17;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 366);
+            this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.imagePanel);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.menuStrip1);
@@ -351,6 +357,7 @@ namespace cg_challenge
             this.menuStrip1.PerformLayout();
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar)).EndInit();
             this.imagePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
@@ -383,7 +390,7 @@ namespace cg_challenge
         private System.Windows.Forms.Button minusYScaleButton;
         private System.Windows.Forms.Button minusXScaleButton;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TrackBar trackBar;
     }
 }
 

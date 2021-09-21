@@ -9,6 +9,7 @@ namespace cg_challenge
     public partial class Form1 : Form
     {
         private Matrix points;
+        private readonly Matrix T = new Matrix(3, 3);
         private float interval = 20;
         public Form1()
         {
@@ -78,83 +79,79 @@ namespace cg_challenge
             }
             Draw();
         }
-
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
             Draw();
         }
 
-        private void ScalePlusButton_Click(object sender, EventArgs e)
+        private void ScalePlusButton_Click(object sender, EventArgs e) => ScaleEqually(false);
+
+        private void ScaleMinusButton_Click(object sender, EventArgs e) => ScaleEqually(true);
+
+        private void RotatePlusButton_Click(object sender, EventArgs e) => Rotate(false);
+
+        private void RotateMinusButton_Click(object sender, EventArgs e) => Rotate(true);
+
+        private void TransfXPbutton_Click(object sender, EventArgs e) => Transform(0, false);
+
+        private void TransfXMbutton_Click(object sender, EventArgs e) => Transform(0, true);
+
+        private void TransfYPbutton_Click(object sender, EventArgs e) => Transform(1, false);
+
+        private void TransfYMbutton_Click(object sender, EventArgs e) => Transform(1, true);
+
+        private void MinusXScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(0, true);
+
+        private void MinusYScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(1, true);
+
+        private void PlusXScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(0, false);
+
+        private void PlusYScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(1, false);
+
+        private void ScaleEqually(bool needMinus)
         {
-            points *= Matrices2D.plusScale;
-            interval *= 1.05F;
+            T.ClearMatrix();
+            float percent = (needMinus ? -1 : 1) * trackBar.Value / 360F;
+            T[0, 0] = 1F + percent;
+            T[1, 1] = 1F + percent;
+            T[2, 2] = 1F;
+            points *= T;
+            interval *= 1F + percent;
+            Draw();
+        }
+        private void Rotate(bool needMinus)
+        {
+            T.ClearMatrix();
+            double degree = (needMinus ? -1 : 1) * trackBar.Value * (Math.PI / 180.0);
+            T[0, 0] = (float)Math.Cos(degree);
+            T[0, 1] = (float)Math.Sin(degree);
+            T[1, 0] = -(float)Math.Sin(degree);
+            T[1, 1] = (float)Math.Cos(degree);
+            T[2, 2] = 1F;
+            points *= T;
             Draw();
         }
 
-        private void ScaleMinusButton_Click(object sender, EventArgs e)
+        private void Transform(int cell, bool needMinus)
         {
-            points *= Matrices2D.minusScale;
-            interval *= 0.95F;
+            T.ClearMatrix();
+            float px = (needMinus ? -1 : 1) * trackBar.Value;
+            T[0, 0] = 1F;
+            T[1, 1] = 1F;
+            T[2, 2] = 1F;
+            T[2, cell] = px;
+            points *= T;
             Draw();
         }
 
-        private void RotatePlusButton_Click(object sender, EventArgs e)
+        private void ScaleOneDemention(int cell, bool needMinus)
         {
-            points *= Matrices2D.plusRotate;
-            Draw();
-        }
-
-        private void RotateMinusButton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.minusRotate;
-            Draw();
-        }
-
-        private void TransfXPbutton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.plusXTransf;
-            Draw();
-        }
-
-        private void TransfXMbutton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.minusXTransf;
-            Draw();
-        }
-
-        private void TransfYPbutton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.plusYTransf;
-            Draw();
-        }
-
-        private void TransfYMbutton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.minusYTransf;
-            Draw();
-        }
-
-        private void MinusXScaleButton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.minusXScale;
-            Draw();
-        }
-
-        private void MinusYScaleButton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.minusYScale;
-            Draw();
-        }
-
-        private void PlusXScaleButton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.plusXScale;
-            Draw();
-        }
-
-        private void PlusYScaleButton_Click(object sender, EventArgs e)
-        {
-            points *= Matrices2D.plusYScale;
+            T.ClearMatrix();
+            float percent = (needMinus ? -1 : 1) * trackBar.Value / 100F;
+            T[cell, cell] = 1F + percent;
+            T[1 - cell, 1 - cell] = 1F;
+            T[2, 2] = 1F;
+            points *= T;
             Draw();
         }
     }
