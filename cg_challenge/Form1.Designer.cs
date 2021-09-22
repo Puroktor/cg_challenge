@@ -350,11 +350,13 @@ namespace cg_challenge
             this.Controls.Add(this.imagePanel);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form";
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel.ResumeLayout(false);

@@ -17,19 +17,19 @@ namespace cg_challenge
             InitializeComponent();
             openFileDialog.Filter = "Point files|*.pnt";
             openFileDialog.FileName = null;
-            axisPoints[0, 0] = 0;
-            axisPoints[0, 1] = pictureBox.Height / 2F;
+            float w = pictureBox.Width / 2F, h = pictureBox.Height / 2F;
+            axisPoints[0, 0] = -w;
+            axisPoints[0, 1] = 0;
             axisPoints[0, 2] = 1;
-            axisPoints[1, 0] = pictureBox.Width;
-            axisPoints[1, 1] = pictureBox.Height / 2F;
+            axisPoints[1, 0] = w;
+            axisPoints[1, 1] = 0;
             axisPoints[1, 2] = 1;
-            axisPoints[2, 0] = pictureBox.Width / 2F;
-            axisPoints[2, 1] = 0;
+            axisPoints[2, 0] = 0;
+            axisPoints[2, 1] = -h;
             axisPoints[2, 2] = 1;
-            axisPoints[3, 0] = pictureBox.Width / 2F;
-            axisPoints[3, 1] = pictureBox.Height;
+            axisPoints[3, 0] = 0;
+            axisPoints[3, 1] = h;
             axisPoints[3, 2] = 1;
-            pictureBox.Focus();
             Draw();
         }
 
@@ -40,7 +40,8 @@ namespace cg_challenge
             int w = pictureBox.Width, h = pictureBox.Height;
             Bitmap bmp = new Bitmap(w, h);
             Graphics g = Graphics.FromImage(bmp);
-            DrawAxes(g, w, h);
+            g.TranslateTransform(w / 2F, h / 2F);
+            DrawAxes(g, w / 2F, h / 2F);
             if (points == null) { pictureBox.Image = bmp; return; }
             Pen pen = new Pen(Color.Black, 2);
             for (int i = 0; i < points.n - 1; i++)
@@ -56,21 +57,21 @@ namespace cg_challenge
             pictureBox.Image = bmp;
         }
 
-        private void DrawAxes(Graphics g, int w, int h)
+        private void DrawAxes(Graphics g, float w, float h)
         {
             Pen pen = new Pen(Color.Red, 2);
             Pen dashPen = new Pen(Color.PaleVioletRed);
             dashPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-            float x1 = 0;
+            float x1 = -w;
             float y1 = axisPoints[0, 1] / axisPoints[0, 2];
             float x2 = w;
             float y2 = axisPoints[1, 1] / axisPoints[1, 2];
             float x3 = axisPoints[2, 0] / axisPoints[2, 2];
-            float y3 = 0;
+            float y3 = -h;
             float x4 = axisPoints[3, 0] / axisPoints[3, 2];
             float y4 = h;
             g.DrawLine(pen, x1, y1, x2, y2);
-            for (int i = 1; x3 - i * interval > 0; i++)
+            for (int i = 1; x3 - i * interval > x1; i++)
             {
                 g.DrawLine(dashPen, x3 - i * interval, y3, x3 - i * interval, y4);
             }
@@ -79,7 +80,7 @@ namespace cg_challenge
                 g.DrawLine(dashPen, x3 + i * interval, y3, x3 + i * interval, y4);
             }
             g.DrawLine(pen, x3, y3, x4, y4);
-            for (int i = 1; y1 - i * interval > 0; i++)
+            for (int i = 1; y1 - i * interval > y3; i++)
             {
                 g.DrawLine(dashPen, x1, y1 - i * interval, x2, y1 - i * interval);
             }
@@ -113,11 +114,11 @@ namespace cg_challenge
         private void PictureBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             T.ClearMatrix();
-            float delta = e.Delta / 1000F;
+            float delta = e.Delta / 2000F;
             T[0, 0] = 1F + delta;
             T[1, 1] = 1F + delta;
-            T[2, 0] = -e.X * delta;
-            T[2, 1] = -e.Y * delta;
+            T[2, 0] = -(e.X - pictureBox.Width / 2F) * delta;
+            T[2, 1] = -(e.Y - pictureBox.Height / 2F) * delta;
             T[2, 2] = 1F;
             points *= T;
             axisPoints *= T;
@@ -129,9 +130,9 @@ namespace cg_challenge
 
         private void ScaleMinusButton_Click(object sender, EventArgs e) => ScaleEqually(true);
 
-        private void RotatePlusButton_Click(object sender, EventArgs e) => Rotate(false);
+        private void RotatePlusButton_Click(object sender, EventArgs e) => Rotate(true);
 
-        private void RotateMinusButton_Click(object sender, EventArgs e) => Rotate(true);
+        private void RotateMinusButton_Click(object sender, EventArgs e) => Rotate(false);
 
         private void TransfXPbutton_Click(object sender, EventArgs e) => Transform(0, false);
 
@@ -157,6 +158,7 @@ namespace cg_challenge
             T[1, 1] = 1F + percent;
             T[2, 2] = 1F;
             points *= T;
+            axisPoints *= T;
             interval *= 1F + percent;
             Draw();
         }
@@ -193,6 +195,23 @@ namespace cg_challenge
             T[1 - cell, 1 - cell] = 1F;
             T[2, 2] = 1F;
             points *= T;
+            Draw();
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            T.ClearMatrix();
+            T[0, 0] = 1F; T[1, 1] = 1F; T[2, 2] = 1F;
+            switch (e.KeyCode)
+            {
+                case Keys.Up: T[2, 1] = 5F; break;
+                case Keys.Down: T[2, 1] = -5F; break;
+                case Keys.Right: T[2, 0] = -5F; break;
+                case Keys.Left: T[2, 0] = 5F; break;
+                default: return;
+            }
+            points *= T;
+            axisPoints *= T;
             Draw();
         }
     }
