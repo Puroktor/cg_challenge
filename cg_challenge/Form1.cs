@@ -30,6 +30,7 @@ namespace cg_challenge
             axisPoints[3, 0] = 0;
             axisPoints[3, 1] = h;
             axisPoints[3, 2] = 1;
+            pictureBox.Focus();
             Draw();
         }
 
