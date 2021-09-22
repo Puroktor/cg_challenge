@@ -9,13 +9,27 @@ namespace cg_challenge
     public partial class Form1 : Form
     {
         private Matrix points;
+        private Matrix axisPoints = new Matrix(4, 3);
         private readonly Matrix T = new Matrix(3, 3);
-        private float interval = 20;
+        private float interval = 40;
         public Form1()
         {
             InitializeComponent();
             openFileDialog.Filter = "Point files|*.pnt";
             openFileDialog.FileName = null;
+            axisPoints[0, 0] = 0;
+            axisPoints[0, 1] = pictureBox.Height / 2F;
+            axisPoints[0, 2] = 1;
+            axisPoints[1, 0] = pictureBox.Width;
+            axisPoints[1, 1] = pictureBox.Height / 2F;
+            axisPoints[1, 2] = 1;
+            axisPoints[2, 0] = pictureBox.Width / 2F;
+            axisPoints[2, 1] = 0;
+            axisPoints[2, 2] = 1;
+            axisPoints[3, 0] = pictureBox.Width / 2F;
+            axisPoints[3, 1] = pictureBox.Height;
+            axisPoints[3, 2] = 1;
+            pictureBox.Focus();
             Draw();
         }
 
@@ -23,14 +37,12 @@ namespace cg_challenge
         {
             if (pictureBox.Width == 0 || pictureBox.Height == 0)
                 return;
-            Bitmap bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
+            int w = pictureBox.Width, h = pictureBox.Height;
+            Bitmap bmp = new Bitmap(w, h);
             Graphics g = Graphics.FromImage(bmp);
-            int w = pictureBox.Width / 2, h = pictureBox.Height / 2;
-            g.TranslateTransform(w, h);
-            g.ScaleTransform(1, -1);
             DrawAxes(g, w, h);
             if (points == null) { pictureBox.Image = bmp; return; }
-            Pen pen = new Pen(Color.Black);
+            Pen pen = new Pen(Color.Black, 2);
             for (int i = 0; i < points.n - 1; i++)
             {
                 g.DrawLine(pen, points[i, 0] / points[i, 2], points[i, 1] / points[i, 2],
@@ -46,20 +58,34 @@ namespace cg_challenge
 
         private void DrawAxes(Graphics g, int w, int h)
         {
-            Pen pen = new Pen(Color.Red);
-            g.DrawLine(pen, -w, 0, w, 0);
-            g.FillPolygon(Brushes.Red, new Point[] { new Point(w, 0), new Point(w - 10, 5), new Point(w - 10, -5) });
-            for (int i = 1; i * interval < w - 10; i++)
+            Pen pen = new Pen(Color.Red, 2);
+            Pen dashPen = new Pen(Color.PaleVioletRed);
+            dashPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            float x1 = 0;
+            float y1 = axisPoints[0, 1] / axisPoints[0, 2];
+            float x2 = w;
+            float y2 = axisPoints[1, 1] / axisPoints[1, 2];
+            float x3 = axisPoints[2, 0] / axisPoints[2, 2];
+            float y3 = 0;
+            float x4 = axisPoints[3, 0] / axisPoints[3, 2];
+            float y4 = h;
+            g.DrawLine(pen, x1, y1, x2, y2);
+            for (int i = 1; x3 - i * interval > 0; i++)
             {
-                g.DrawLine(pen, i * interval, -3, i * interval, 3);
-                g.DrawLine(pen, -i * interval, -3, -i * interval, 3);
+                g.DrawLine(dashPen, x3 - i * interval, y3, x3 - i * interval, y4);
             }
-            g.DrawLine(pen, 0, -h, 0, h);
-            g.FillPolygon(Brushes.Red, new Point[] { new Point(0, h), new Point(5, h - 10), new Point(-5, h - 10) });
-            for (int i = 1; i * interval < h - 10; i++)
+            for (int i = 1; x3 + i * interval < x2; i++)
             {
-                g.DrawLine(pen, -3, i * interval, 3, i * interval);
-                g.DrawLine(pen, -3, -i * interval, 3, -i * interval);
+                g.DrawLine(dashPen, x3 + i * interval, y3, x3 + i * interval, y4);
+            }
+            g.DrawLine(pen, x3, y3, x4, y4);
+            for (int i = 1; y1 - i * interval > 0; i++)
+            {
+                g.DrawLine(dashPen, x1, y1 - i * interval, x2, y1 - i * interval);
+            }
+            for (int i = 1; y1 + i * interval < y4; i++)
+            {
+                g.DrawLine(dashPen, x1, y1 + i * interval, x2, y1 + i * interval);
             }
         }
 
@@ -81,6 +107,21 @@ namespace cg_challenge
         }
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
+            Draw();
+        }
+
+        private void PictureBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            T.ClearMatrix();
+            float delta = e.Delta / 1000F;
+            T[0, 0] = 1F + delta;
+            T[1, 1] = 1F + delta;
+            T[2, 0] = -e.X * delta;
+            T[2, 1] = -e.Y * delta;
+            T[2, 2] = 1F;
+            points *= T;
+            axisPoints *= T;
+            interval *= T[0, 0];
             Draw();
         }
 
@@ -111,7 +152,7 @@ namespace cg_challenge
         private void ScaleEqually(bool needMinus)
         {
             T.ClearMatrix();
-            float percent = (needMinus ? -1 : 1) * trackBar.Value / 360F;
+            float percent = (needMinus ? -1 : 1) * trackBar.Value / 361F;
             T[0, 0] = 1F + percent;
             T[1, 1] = 1F + percent;
             T[2, 2] = 1F;
@@ -147,7 +188,7 @@ namespace cg_challenge
         private void ScaleOneDemention(int cell, bool needMinus)
         {
             T.ClearMatrix();
-            float percent = (needMinus ? -1 : 1) * trackBar.Value / 100F;
+            float percent = (needMinus ? -1 : 1) * trackBar.Value / 361F;
             T[cell, cell] = 1F + percent;
             T[1 - cell, 1 - cell] = 1F;
             T[2, 2] = 1F;

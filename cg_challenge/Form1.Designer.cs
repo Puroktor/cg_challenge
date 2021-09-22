@@ -62,13 +62,14 @@ namespace cg_challenge
             // 
             // menuStrip1
             // 
+            this.menuStrip1.AutoSize = false;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openButton});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(950, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip";
             // 
@@ -105,10 +106,10 @@ namespace cg_challenge
             this.panel.Controls.Add(this.scalePlusButton);
             this.panel.Controls.Add(this.label1);
             this.panel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel.Location = new System.Drawing.Point(634, 24);
+            this.panel.Location = new System.Drawing.Point(800, 24);
             this.panel.Margin = new System.Windows.Forms.Padding(2);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(150, 537);
+            this.panel.Size = new System.Drawing.Size(150, 600);
             this.panel.TabIndex = 0;
             // 
             // trackBar
@@ -326,7 +327,7 @@ namespace cg_challenge
             this.imagePanel.Location = new System.Drawing.Point(0, 24);
             this.imagePanel.Margin = new System.Windows.Forms.Padding(2);
             this.imagePanel.Name = "imagePanel";
-            this.imagePanel.Size = new System.Drawing.Size(634, 537);
+            this.imagePanel.Size = new System.Drawing.Size(800, 600);
             this.imagePanel.TabIndex = 3;
             // 
             // pictureBox
@@ -336,15 +337,16 @@ namespace cg_challenge
             this.pictureBox.Location = new System.Drawing.Point(0, 0);
             this.pictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(634, 537);
+            this.pictureBox.Size = new System.Drawing.Size(800, 600);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            this.pictureBox.MouseWheel += PictureBox_MouseWheel;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(950, 624);
             this.Controls.Add(this.imagePanel);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.menuStrip1);
