@@ -15,6 +15,7 @@ namespace cg_challenge
         public Form1()
         {
             InitializeComponent();
+            this.pictureBox.MouseWheel += PictureBox_MouseWheel;
             openFileDialog.Filter = "Point files|*.pnt";
             openFileDialog.FileName = null;
             float w = pictureBox.Width / 2F, h = pictureBox.Height / 2F;
@@ -36,7 +37,7 @@ namespace cg_challenge
 
         private void Draw()
         {
-            if (pictureBox.Width == 0 || pictureBox.Height == 0)
+            if (pictureBox.Width == 0 || pictureBox.Height == 0 || axisPoints[0, 0] == 0)
                 return;
             int w = pictureBox.Width, h = pictureBox.Height;
             Bitmap bmp = new Bitmap(w, h);
@@ -143,30 +144,28 @@ namespace cg_challenge
 
         private void TransfYMbutton_Click(object sender, EventArgs e) => Transform(1, true);
 
-        private void MinusXScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(0, true);
+        private void MinusXScaleButton_Click(object sender, EventArgs e) => ScaleOneDimention(0, true);
 
-        private void MinusYScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(1, true);
+        private void MinusYScaleButton_Click(object sender, EventArgs e) => ScaleOneDimention(1, true);
 
-        private void PlusXScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(0, false);
+        private void PlusXScaleButton_Click(object sender, EventArgs e) => ScaleOneDimention(0, false);
 
-        private void PlusYScaleButton_Click(object sender, EventArgs e) => ScaleOneDemention(1, false);
+        private void PlusYScaleButton_Click(object sender, EventArgs e) => ScaleOneDimention(1, false);
 
         private void ScaleEqually(bool needMinus)
         {
             T.ClearMatrix();
-            float percent = (needMinus ? -1 : 1) * trackBar.Value / 361F;
+            float percent = (needMinus ? -1 : 1) * percentageTrackBar.Value / 100F;
             T[0, 0] = 1F + percent;
             T[1, 1] = 1F + percent;
             T[2, 2] = 1F;
             points *= T;
-            axisPoints *= T;
-            interval *= 1F + percent;
             Draw();
         }
         private void Rotate(bool needMinus)
         {
             T.ClearMatrix();
-            double degree = (needMinus ? -1 : 1) * trackBar.Value * (Math.PI / 180.0);
+            double degree = (needMinus ? -1 : 1) * degreeTrackBar.Value * (Math.PI / 180.0);
             T[0, 0] = (float)Math.Cos(degree);
             T[0, 1] = (float)Math.Sin(degree);
             T[1, 0] = -(float)Math.Sin(degree);
@@ -179,7 +178,7 @@ namespace cg_challenge
         private void Transform(int cell, bool needMinus)
         {
             T.ClearMatrix();
-            float px = (needMinus ? -1 : 1) * trackBar.Value;
+            float px = (needMinus ? -1 : 1) * pxTrackBar.Value;
             T[0, 0] = 1F;
             T[1, 1] = 1F;
             T[2, 2] = 1F;
@@ -188,10 +187,10 @@ namespace cg_challenge
             Draw();
         }
 
-        private void ScaleOneDemention(int cell, bool needMinus)
+        private void ScaleOneDimention(int cell, bool needMinus)
         {
             T.ClearMatrix();
-            float percent = (needMinus ? -1 : 1) * trackBar.Value / 361F;
+            float percent = (needMinus ? -1 : 1) * percentageTrackBar.Value / 100F;
             T[cell, cell] = 1F + percent;
             T[1 - cell, 1 - cell] = 1F;
             T[2, 2] = 1F;
@@ -214,6 +213,21 @@ namespace cg_challenge
             points *= T;
             axisPoints *= T;
             Draw();
+        }
+
+        private void PercentageTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            percentageLabel.Text = ((TrackBar)sender).Value.ToString();
+        }
+
+        private void DegreeTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            degreeLabel.Text = ((TrackBar)sender).Value.ToString();
+        }
+
+        private void PxTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            pxLabel.Text = ((TrackBar)sender).Value.ToString();
         }
     }
 }
